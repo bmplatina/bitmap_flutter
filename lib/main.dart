@@ -4,6 +4,8 @@ import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
+import 'sidemenu.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -13,8 +15,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isApple() {
-      switch(Theme.of(context).platform) {
-      //TODO: Handle this case.
+      switch (Theme.of(context).platform) {
+        //TODO: Handle this case.
         case TargetPlatform.iOS:
           return true;
         case TargetPlatform.macOS:
@@ -24,10 +26,9 @@ class MyApp extends StatelessWidget {
       }
     }
 
-    return isApple() ? CupertinoApp(
-      home: Text('Cupertino')
-    ) : MaterialApp(
-      home: Text('Material')
+    return CupertinoApp(
+      title: 'Bitmap',
+      home: SideBar(),
     );
   }
 }
