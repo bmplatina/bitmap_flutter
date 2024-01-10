@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "772709659902",
+    "firebase_url": "https://bitmap-esd-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "bitmap-esd",
+    "storage_bucket": "bitmap-esd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:772709659902:android:625268b0ed18028c4721af",
+        "android_client_info": {
+          "package_name": "com.example.bitmap_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "772709659902-q7aduttjkooe4drugkiicsomjag9h9no.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATrwGXHOKy24T8xECcKrrri0I6zyjvkew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "772709659902-q7aduttjkooe4drugkiicsomjag9h9no.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "772709659902-apb92vpp7mn6uvuhornofs6r3j5ffb9u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.bitmapFlutter.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:772709659902:android:c394832c5cddefb94721af",
+        "android_client_info": {
+          "package_name": "com.prodbybitmap.bitmap_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "772709659902-q7aduttjkooe4drugkiicsomjag9h9no.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATrwGXHOKy24T8xECcKrrri0I6zyjvkew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "772709659902-q7aduttjkooe4drugkiicsomjag9h9no.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "772709659902-apb92vpp7mn6uvuhornofs6r3j5ffb9u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.bitmapFlutter.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
