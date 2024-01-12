@@ -24,7 +24,7 @@ class _SideBarState extends State<SideBar> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  InfoCard(name: 'Platina', email: 'kkgordon.com@gmail.com'),
+                  InfoCard(name: '이재혁', email: 'kkgordon.com@gmail.com'),
                   Padding(
                     padding:
                         const EdgeInsets.only(left: 24, top: 32, bottom: 16),
@@ -64,7 +64,7 @@ class _SideBarState extends State<SideBar> {
                           });
                         },
                         isActive: selectedMenu == menu,
-                      )),
+                  )),
                 ],
               ),
             )));
@@ -73,11 +73,14 @@ class _SideBarState extends State<SideBar> {
 
 class SideMenuInteractables extends StatelessWidget {
   const SideMenuInteractables(
-      {super.key,
-      required this.menu,
-      required this.press,
-      // required this.onInit,
-      required this.isActive});
+      {
+        super.key,
+        required this.menu,
+        required this.press,
+        // required this.onInit,
+        required this.isActive
+      }
+  );
 
   final SideMenuIcons menu;
   final VoidCallback press;

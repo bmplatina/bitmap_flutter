@@ -15,6 +15,8 @@ class SideMenuIcons {
 
 List<SideMenuIcons> sideMenuMain = [
   SideMenuIcons(CupertinoIcons.home,
+      artboard: 'HOME', stateMachineName: 'HOME_Interactivity', title: 'Home'),
+  SideMenuIcons(CupertinoIcons.book,
       artboard: 'WIKI', stateMachineName: 'WIKI_Interactivity', title: 'Wiki'),
   SideMenuIcons(CupertinoIcons.news,
       artboard: 'NEWS',

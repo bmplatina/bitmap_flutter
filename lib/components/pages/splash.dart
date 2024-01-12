@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:lottie/lottie.dart';
@@ -59,8 +57,8 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
             children: [
               SizedBox(
                 // 크기 지정
-                  width: 500,
-                  height: 500,
+                  width: 1920,
+                  height: 1080,
                   // 내가 저장한 lottie 에셋 지정
                   child: Stack(
                     children: [
@@ -76,8 +74,8 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
                           // Configure the AnimationController with the duration of the
                           // Lottie file and start the animation.
                           _controller
-                          ..duration = composition.duration
-                          ..forward();
+                            ..duration = composition.duration
+                            ..forward();
                         }),
                     ]
                   )
