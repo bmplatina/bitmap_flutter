@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:lottie/lottie.dart';
@@ -11,6 +13,15 @@ class Splash extends StatefulWidget {
 
 class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+
+  void navigateToWidget(BuildContext context, Widget destinationWidget) { // 위젯이 로드되면 바로 이동
+  Navigator.pushAndRemoveUntil(
+    context,
+    CupertinoPageRoute(builder: (BuildContext context) => destinationWidget), // 이동할 새 페이지
+    (route) => false // 이전 모든 경로를 제거하기 위한 조건 함수
+  );
+}
+
   @override
   void initState() {
     super.initState();
@@ -20,8 +31,13 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
         const Duration(seconds: 3),
             () => Navigator.pushAndRemoveUntil(
                 context,
-                CupertinoPageRoute(builder: (BuildContext context) => SideBar()), // Init Page
+                CupertinoPageRoute(builder: (BuildContext context) => EntryPoint()), // Init Page
                 (route) => false));
+
+    // SideBar() 페이지의 로딩이 완료되면 navigateToSideBar 호출
+    // WidgetsBinding.instance?.addPostFrameCallback((_) {
+    //   navigateToWidget(context, SideBar());
+    // });
   }
 
   @override
@@ -48,7 +64,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
                   // 내가 저장한 lottie 에셋 지정
                   child: Stack(
                     children: [
-                      Container(color: CupertinoColors.systemPink),
+                      Container(color: CupertinoColors.systemPink, width: double.infinity, height: double.infinity,),
                       Lottie.asset('assets/lottie/BitmapBaseIntro.json',
                         controller: _controller, onLoaded: (composition) {
                           _controller.addStatusListener((status) {
@@ -73,3 +89,5 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
     );
   }
 }
+
+// 안도ㅐ 이것만큼은 ㅠㅠ  야 너 머싯는거 하네 망치고싶게~~~

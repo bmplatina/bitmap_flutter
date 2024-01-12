@@ -39,6 +39,8 @@ dependencies:
   firebase_core: ^2.24.2
   lottie: ^2.3.2
   rive: ^0.12.4
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:
