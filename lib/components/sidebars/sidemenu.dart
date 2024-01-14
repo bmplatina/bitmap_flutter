@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../models/SideMenuElements.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'infocard.dart';
 
 class SideBar extends StatefulWidget {
@@ -24,6 +25,13 @@ class _SideBarState extends State<SideBar> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // StreamBuilder(
+                  //   stream: FirebaseAuth.instance.authStateChanges(),
+                  //   builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+                  //     if(snapshot.hasData) return InfoCard(name: snapshot.data.displayName, email: snapshot.data.email)
+                  //     else return InfoCard(name: '이재혁', email: 'kkgordon.com@gmail.com')
+                  //   }
+                  // ),
                   InfoCard(name: '이재혁', email: 'kkgordon.com@gmail.com'),
                   Padding(
                     padding:

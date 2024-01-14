@@ -57,10 +57,11 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
             children: [
               SizedBox(
                 // 크기 지정
-                  width: 1920,
-                  height: 1080,
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
                   // 내가 저장한 lottie 에셋 지정
                   child: Stack(
+                    alignment: Alignment.center,
                     children: [
                       Container(color: CupertinoColors.systemPink, width: double.infinity, height: double.infinity,),
                       Lottie.asset('assets/lottie/BitmapBaseIntro.json',

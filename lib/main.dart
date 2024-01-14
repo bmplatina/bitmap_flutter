@@ -1,12 +1,8 @@
-// Firebase
-import 'package:bitmap_flutter/components/pages/entrypoint.dart';
-import 'package:firebase_core/firebase_core.dart';
-// import 'firebase_options.dart';
 // Flutter
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 // Components
-import 'components/sidebars/sidemenu.dart';
 import 'components/pages/splash.dart';
 
 void main() => runApp(MyApp());
@@ -29,7 +25,15 @@ class MyApp extends StatelessWidget {
       }
     }
 
-    return CupertinoApp(
+    return MaterialApp(
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', 'US'),
+        const Locale('ko', 'KR'),
+      ],
       title: 'Bitmap',
       home: Splash(),
     );

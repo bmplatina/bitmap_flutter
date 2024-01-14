@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:bitmap_flutter/components/pages/Website.dart';
 import 'package:bitmap_flutter/components/sidebars/sidemenu.dart';
 import 'package:flutter/cupertino.dart';
@@ -53,26 +52,28 @@ class _EntryPointState extends State<EntryPoint> with SingleTickerProviderStateM
           trailing: CupertinoButton(
             child: isLoggedIn ? Icon(CupertinoIcons.arrow_right_square): Icon(CupertinoIcons.arrow_right_square_fill),
             onPressed: () {
-              showCupertinoModalPopup(
+              showDialog(
                 context: context,
-                builder: (BuildContext context) => CupertinoActionSheet(
-                  title: Text('Bitmap에 로그인하기'),
-                  message: Text('Bitmap에 로그인하지 않았습니다. 로그인하시겠습니까?'),
-                  actions: <Widget>[
-                    CupertinoActionSheetAction(
-                      child: Text('로그인하기'),
-                      onPressed: () {
-                        Navigator.pop(context, 1);
-                      },
-                    ),
-                    CupertinoActionSheetAction(
-                      child: Text('취소', style: TextStyle(color: CupertinoColors.destructiveRed),),
-                      onPressed: () {
-                        Navigator.pop(context, 2);
-                      },
-                    ),
-                  ],
-                ),
+                builder: (BuildContext context) {
+                  return CupertinoAlertDialog(
+                    title: Text('Dialog Title'),
+                    content: Text('Dialog Content'),
+                    actions: [
+                      CupertinoDialogAction(
+                        child: Text('Cancel'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      CupertinoDialogAction(
+                        child: Text('OK'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
               );
               setState(() {
                 isLoggedIn = !isLoggedIn;
