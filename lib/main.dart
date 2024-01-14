@@ -1,11 +1,18 @@
 // Flutter
+import 'package:bitmap_flutter/firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+// Firebase
+import 'package:firebase_core/firebase_core.dart';
 // Components
 import 'components/pages/splash.dart';
 
-void main() => runApp(MyApp());
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -15,7 +22,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isApple() {
       switch (Theme.of(context).platform) {
-        //TODO: Handle this case.
         case TargetPlatform.iOS:
           return true;
         case TargetPlatform.macOS:
@@ -25,14 +31,14 @@ class MyApp extends StatelessWidget {
       }
     }
 
-    return MaterialApp(
+    return CupertinoApp(
       localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: [
         const Locale('en', 'US'),
-        const Locale('ko', 'KR'),
+        // const Locale('ko', 'KR'),
       ],
       title: 'Bitmap',
       home: Splash(),

@@ -3,6 +3,9 @@ import 'package:bitmap_flutter/components/pages/Website.dart';
 import 'package:bitmap_flutter/components/sidebars/sidemenu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../../models/Firebase.dart';
 
 class EntryPoint extends StatefulWidget {
   const EntryPoint({super.key});
@@ -12,9 +15,15 @@ class EntryPoint extends StatefulWidget {
 }
 
 class _EntryPointState extends State<EntryPoint> with SingleTickerProviderStateMixin {
-  bool isSidebarOpened = false, isLoggedIn = false;
+  // Sidebar Animations
+  bool isSidebarOpened = false;
   late AnimationController _animationController;
   late Animation<double> animation;
+
+  // Firebase Auth Info
+  FirebaseBmp bmpAuth = FirebaseBmp.instance;
+  final _idTextEditCtl = TextEditingController(); // Use _idTextEditCtl.text to get value
+  final _pwTextEditCtl = TextEditingController(); // Use _pwTextEditCtl.text to get value
 
   @override
   void initState() {
@@ -35,49 +44,176 @@ class _EntryPointState extends State<EntryPoint> with SingleTickerProviderStateM
   void dispose() {
     // TODO: implement dispose
     _animationController.dispose();
+    _idTextEditCtl.dispose();
+    _pwTextEditCtl.dispose();
     super.dispose();
   }
 
-  double map(double val, double oldMin, double oldMax, double newMin, double newMax) {
+  // Custom Functions
+  double map(double val, double oldMin, double oldMax, double newMin, double newMax) {  // map a value in new range
     return (((val - oldMin) * (newMax - newMin)) / (oldMax - oldMin) + newMin);
+  }
+
+  _showDismissableAlert(BuildContext context, String title, String content) {
+    showCupertinoDialog(context: context, builder: (context) => CupertinoAlertDialog(
+      title: Text(title),
+      content: Text(content),
+      actions: <Widget> [
+        CupertinoDialogAction(child: Text('Dismiss'), onPressed: () {Navigator.of(context).pop();},)
+      ],
+    ));
+  }
+
+  _showLoginDialog(BuildContext context) {
+    showCupertinoDialog(
+      context: context,
+      builder: (context) => CupertinoAlertDialog(
+        title: Text('Login to Bitmap'),
+        content: Column(
+          children: [
+            Padding(
+                padding: const EdgeInsets.only(top: 10, bottom: 10),
+                child: Text('Login to Bitmap and enjoy our services.')
+            ),
+            CupertinoTextField(
+              controller: _idTextEditCtl,
+              placeholder: 'Email',
+              onChanged: (text) {
+                setState(() {
+
+                });
+              },
+            ),
+            CupertinoTextField(
+              controller: _pwTextEditCtl,
+              placeholder: 'Password',
+              obscureText: true,
+              onChanged: (text) {
+                setState(() {
+
+                });
+              },
+            )
+          ],
+        ),
+        actions: <Widget> [
+          CupertinoDialogAction(
+            child: Text('Login'),
+            onPressed: () async {
+              try {
+                UserCredential _credential = await bmpAuth.getAuth().signInWithEmailAndPassword(email: _idTextEditCtl.text, password: _pwTextEditCtl.text);
+                if(_credential.user != null) {
+                  bmpAuth.setUser(_credential.user!);
+                  // bmpAuthisLoggedIn = true;
+                  Navigator.of(context).pop();
+                } else {
+                  _showDismissableAlert(context, 'Login Failed', 'Cannot login to Bitmap. It would be internal server error.');
+                }
+              } on FirebaseAuthException catch (error) {
+                switch(error.code) {
+                  case 'invalid-email':
+                    _showDismissableAlert(context, 'Invalid Email', 'Email address that you typed is invalid. Please check your Email address.\nError Code: ' + error.code);
+                    break;
+                  case 'user-disabled':
+                    _showDismissableAlert(context, 'Your account is disabled', 'Your account is disabled. Please contact to service provider.\nError Code: ' + error.code);
+                    break;
+                  case "user-not-found":
+                    _showDismissableAlert(context, 'Incorrect Email', 'We can\'t find your account. Please sign up first.\nError Code: ' + error.code);
+                    break;
+                  case "wrong-password":
+                    _showDismissableAlert(context, 'Wrong password', 'You typed wrong password. Please check your password.\nError Code: ' + error.code);
+                    break;
+                }
+              }
+            }
+          ),
+          CupertinoDialogAction(
+              child: Text('Sign-up'),
+              onPressed: () async {
+                try {
+                  UserCredential _credential = await bmpAuth.getAuth().createUserWithEmailAndPassword(email: _idTextEditCtl.text, password: _pwTextEditCtl.text);
+                  if(_credential.user != null) {
+                    bmpAuth.setUser(_credential.user!);
+                    // isLoggedIn = true;
+                    Navigator.of(context).pop();
+                  } else {
+                    _showDismissableAlert(context, 'Login Failed', 'Cannot login to Bitmap. It would be internal server error.');
+                  }
+                } on FirebaseAuthException catch (error) {
+                  switch(error.code) {
+                    case 'invalid-email':
+                      _showDismissableAlert(context, 'Invalid Email', 'Email address that you typed is invalid. Please check your Email address.\nError Code: ' + error.code);
+                      break;
+                    case 'user-disabled':
+                      _showDismissableAlert(context, 'Your account is disabled', 'Your account is disabled. Please contact to service provider.\nError Code: ' + error.code);
+                      break;
+                    case "user-not-found":
+                      _showDismissableAlert(context, 'Incorrect Email', 'We can\'t find your account. Please sign up first.\nError Code: ' + error.code);
+                      break;
+                    case "wrong-password":
+                      _showDismissableAlert(context, 'Wrong password', 'You typed wrong password. Please check your password.\nError Code: ' + error.code);
+                      break;
+                  }
+                }
+              }
+          ),
+          CupertinoDialogAction(
+              child: Text('Cancel', style: TextStyle(color: CupertinoColors.destructiveRed)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              }
+          ),
+        ],
+      )
+    );
+  }
+
+  _showLogoutDialog(BuildContext context) {
+    showCupertinoDialog(
+        context: context,
+        builder: (context) => CupertinoAlertDialog(
+          title: Text('Logout'),
+          content: Text('Are you sure you want to sign out, ${bmpAuth.getDisplayName()}?'),
+          actions: <Widget> [
+            CupertinoDialogAction(
+                child: Text('Cancel', style: TextStyle(color: CupertinoColors.destructiveRed)),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }
+            ),
+            CupertinoDialogAction(
+                child: Text('Logout'),
+                onPressed: () async {
+                  await bmpAuth.getAuth().signOut();
+                  // isLoggedIn = false;
+                  Navigator.of(context).pop();
+                }
+            ),
+          ],
+        )
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return CupertinoApp(
+      localizationsDelegates: [
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', 'US'),
+        // const Locale('ko', 'KR'),
+      ],
       home: CupertinoPageScaffold(
         backgroundColor: Color(0xFF17203A),
         navigationBar: CupertinoNavigationBar(
           middle: Text('Bitmap'),
           trailing: CupertinoButton(
-            child: isLoggedIn ? Icon(CupertinoIcons.arrow_right_square): Icon(CupertinoIcons.arrow_right_square_fill),
+            child: bmpAuth.isLoggedIn() ? Icon(CupertinoIcons.arrow_right_square_fill): Icon(CupertinoIcons.arrow_right_square),
             onPressed: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return CupertinoAlertDialog(
-                    title: Text('Dialog Title'),
-                    content: Text('Dialog Content'),
-                    actions: [
-                      CupertinoDialogAction(
-                        child: Text('Cancel'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      CupertinoDialogAction(
-                        child: Text('OK'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  );
-                },
-              );
-              setState(() {
-                isLoggedIn = !isLoggedIn;
-              });
+              if(bmpAuth.isLoggedIn()) _showLogoutDialog(context);
+              else _showLoginDialog(context);
             },
           ),
           leading: CupertinoButton(
