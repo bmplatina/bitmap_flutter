@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirebaseBmp {
@@ -17,9 +18,12 @@ class FirebaseBmp {
   // 싱글톤 인스턴스 얻기
   // FirebaseBmp bmpAuth = FirebaseBmp.instance;
 
-  // Variables
+  // Firebase Auth
   final FirebaseAuth _auth = FirebaseAuth.instance;
   User? user;
+
+  // Firestore Database
+  final FirebaseFirestore db = FirebaseFirestore.instance;
 
   // Methods
   FirebaseAuth getAuth() {

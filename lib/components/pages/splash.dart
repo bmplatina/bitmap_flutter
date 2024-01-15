@@ -63,7 +63,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
-                      Container(color: CupertinoColors.systemPink, width: double.infinity, height: double.infinity,),
+                      Container(color: Color(0xFF17203A), width: double.infinity, height: double.infinity,),
                       Lottie.asset('assets/lottie/BitmapBaseIntro.json',
                         controller: _controller, onLoaded: (composition) {
                           _controller.addStatusListener((status) {
@@ -78,6 +78,28 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
                             ..duration = composition.duration
                             ..forward();
                         }),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                          child: Padding(
+                            padding: EdgeInsets.only(bottom: 16),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text('BITMAP',
+                                  style: TextStyle(
+                                      color: CupertinoColors.white,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold
+                                  ),),
+                                Text('Powered by Platina',
+                                  style: TextStyle(
+                                      color: CupertinoColors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                      )
                     ]
                   )
               )
