@@ -16,23 +16,28 @@ class EntryPoint extends StatefulWidget {
 
 class _EntryPointState extends State<EntryPoint> with SingleTickerProviderStateMixin {
   // Sidebar Animations
-  bool isSidebarOpened = false;
+  bool isSidebarOpened = false, isLoggedIn = false;
   late AnimationController _animationController;
   late Animation<double> animation;
 
   // Firebase Auth Info
-  FirebaseBmp bmpAuth = FirebaseBmp.instance;
+  FirebaseBmp _bmpFirebase = FirebaseBmp.instance;
   final _idTextEditCtl = TextEditingController(); // Use _idTextEditCtl.text to get value
   final _pwTextEditCtl = TextEditingController(); // Use _pwTextEditCtl.text to get value
 
   @override
   void initState() {
-    // TODO: implement initState
     _animationController = AnimationController(
         vsync: this, 
         duration: Duration(milliseconds: 200)
     )..addListener(() {
       setState(() { });
+    });
+
+    _bmpFirebase.getAuth().authStateChanges().listen((User? user) {
+      setState(() {
+        isLoggedIn = _bmpFirebase.isLoggedIn();
+      });
     });
 
     animation = Tween<double>(begin: 0, end: 1)
@@ -101,10 +106,8 @@ class _EntryPointState extends State<EntryPoint> with SingleTickerProviderStateM
             child: Text('Login'),
             onPressed: () async {
               try {
-                UserCredential _credential = await bmpAuth.getAuth().signInWithEmailAndPassword(email: _idTextEditCtl.text, password: _pwTextEditCtl.text);
+                UserCredential _credential = await _bmpFirebase.getAuth().signInWithEmailAndPassword(email: _idTextEditCtl.text, password: _pwTextEditCtl.text);
                 if(_credential.user != null) {
-                  bmpAuth.setUser(_credential.user!);
-                  // bmpAuthisLoggedIn = true;
                   Navigator.of(context).pop();
                 } else {
                   _showDismissableAlert(context, 'Login Failed', 'Cannot login to Bitmap. It would be internal server error.');
@@ -131,9 +134,8 @@ class _EntryPointState extends State<EntryPoint> with SingleTickerProviderStateM
               child: Text('Sign-up'),
               onPressed: () async {
                 try {
-                  UserCredential _credential = await bmpAuth.getAuth().createUserWithEmailAndPassword(email: _idTextEditCtl.text, password: _pwTextEditCtl.text);
+                  UserCredential _credential = await _bmpFirebase.getAuth().createUserWithEmailAndPassword(email: _idTextEditCtl.text, password: _pwTextEditCtl.text);
                   if(_credential.user != null) {
-                    bmpAuth.setUser(_credential.user!);
                     // isLoggedIn = true;
                     Navigator.of(context).pop();
                   } else {
@@ -173,7 +175,7 @@ class _EntryPointState extends State<EntryPoint> with SingleTickerProviderStateM
         context: context,
         builder: (context) => CupertinoAlertDialog(
           title: Text('Logout'),
-          content: Text('Are you sure you want to sign out, ${bmpAuth.getDisplayName()}?'),
+          content: Text('Are you sure you want to sign out, ${_bmpFirebase.getDisplayName()}?'),
           actions: <Widget> [
             CupertinoDialogAction(
                 child: Text('Cancel', style: TextStyle(color: CupertinoColors.destructiveRed)),
@@ -183,9 +185,8 @@ class _EntryPointState extends State<EntryPoint> with SingleTickerProviderStateM
             ),
             CupertinoDialogAction(
                 child: Text('Logout'),
-                onPressed: () async {
-                  await bmpAuth.getAuth().signOut();
-                  // isLoggedIn = false;
+                onPressed: () {
+                  _bmpFirebase.getAuth().signOut();
                   Navigator.of(context).pop();
                 }
             ),
@@ -210,9 +211,10 @@ class _EntryPointState extends State<EntryPoint> with SingleTickerProviderStateM
         navigationBar: CupertinoNavigationBar(
           middle: Text('Bitmap'),
           trailing: CupertinoButton(
-            child: bmpAuth.isLoggedIn() ? Icon(CupertinoIcons.arrow_right_square_fill): Icon(CupertinoIcons.arrow_right_square),
+            child: isLoggedIn ? Icon(CupertinoIcons.arrow_right_square_fill): Icon(CupertinoIcons.arrow_right_square),
             onPressed: () {
-              if(bmpAuth.isLoggedIn()) _showLogoutDialog(context);
+              setState(() { });
+              if(isLoggedIn) _showLogoutDialog(context);
               else _showLoginDialog(context);
             },
           ),

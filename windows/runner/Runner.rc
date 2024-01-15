@@ -93,9 +93,9 @@ BEGIN
             VALUE "FileDescription", "bitmap_flutter" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "bitmap_flutter" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2024 com.prodbybitmap. All rights reserved." "\0"
-            VALUE "OriginalFilename", "bitmap_flutter.exe" "\0"
-            VALUE "ProductName", "bitmap_flutter" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2024 Bitmap Production. All rights reserved." "\0"
+            VALUE "OriginalFilename", "Bitmap.exe" "\0"
+            VALUE "ProductName", "Bitmap" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

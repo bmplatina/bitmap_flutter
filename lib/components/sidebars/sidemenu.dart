@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../models/SideMenuElements.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import '../../models/Firebase.dart';
 import 'infocard.dart';
 
 class SideBar extends StatefulWidget {
@@ -14,20 +12,6 @@ class SideBar extends StatefulWidget {
 
 class _SideBarState extends State<SideBar> {
   SideMenuIcons selectedMenu = sideMenuMain.first;
-  FirebaseBmp bmpAuth = FirebaseBmp.instance;
-
-  // Widget _InfoCard() {
-  //   setState(() {
-  //
-  //   });
-  //   if (bmpAuth
-  //       .getDisplayName() != null
-  //       && bmpAuth.getEmail() != null)
-  //     return InfoCard(name: '${bmpAuth.getDisplayName()}',
-  //         email: '${bmpAuth.getEmail()}');
-  //   else
-  //     return InfoCard(name: 'Login First', email: '');
-  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +30,7 @@ class _SideBarState extends State<SideBar> {
                   //     else return InfoCard(name: '이재혁', email: 'kkgordon.com@gmail.com')
                   //   }
                   // ),
-                  InfoCard(name: '${bmpAuth.getDisplayName()}', email: '${bmpAuth.getEmail()}'),
+                  InfoCard(),
                   Padding(
                     padding:
                         const EdgeInsets.only(left: 24, top: 32, bottom: 16),

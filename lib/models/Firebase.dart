@@ -1,5 +1,7 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
 
 class FirebaseBmp {
   // 정적 멤버 변수: 클래스 인스턴스를 저장하기 위한 변수
@@ -16,33 +18,34 @@ class FirebaseBmp {
   }
 
   // 싱글톤 인스턴스 얻기
-  // FirebaseBmp bmpAuth = FirebaseBmp.instance;
+  // FirebaseBmp bmpFirebase = FirebaseBmp.instance;
 
   // Firebase Auth
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  User? user;
+  User? _user;
 
+  // Firebase Realtime Database
+  final String _url = 'https://bitmap-esd-default-rtdb.asia-southeast1.firebasedatabase.app';
   // Firestore Database
-  final FirebaseFirestore db = FirebaseFirestore.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // Methods
   FirebaseAuth getAuth() {
     return _auth;
   }
 
+  // User
   User getCurrentUser() {
-    return FirebaseAuth.instance.currentUser!;
-  }
-  User getUser() {
-    return user!;
-  }
-  void setUser(User newUser) {
-    user = newUser;
+    return _auth.currentUser!;
   }
 
+  // Auth
   bool isLoggedIn() {
-    return user != null;
+    return _auth.currentUser != null;
   }
+
+
+  // User Info
   String? getDisplayName() {
     User? currentUser = FirebaseAuth.instance.currentUser;
 
@@ -61,4 +64,15 @@ class FirebaseBmp {
       return ''; // 사용자가 로그인되어 있지 않거나 Display Name이 없는 경우 null 반환
     }
   }
+
+  // Realtime Database
+  /* firebasePost() async {
+    await http.post(Uri.parse(_url), body: jsonEncode(data));
+  }
+
+  firebaseGet() async {
+    await http.get(Uri.parse(_url)).then((value) => {
+      if(jsonDecode(value.body) != null)
+    });
+  } */
 }
