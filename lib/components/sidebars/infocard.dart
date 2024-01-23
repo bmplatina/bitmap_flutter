@@ -51,7 +51,7 @@ class _InfoCardState extends State<InfoCard> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: const CircleAvatar(
+      leading: CircleAvatar(
         backgroundColor: Colors.white24,
         child: Icon(
           CupertinoIcons.person,

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../models/Firebase.dart';
+import 'auth.dart';
 
 class EntryPoint extends StatefulWidget {
   const EntryPoint({super.key});
@@ -21,7 +22,7 @@ class _EntryPointState extends State<EntryPoint> with SingleTickerProviderStateM
   late Animation<double> animation;
 
   // Firebase Auth Info
-  FirebaseBmp _bmpFirebase = FirebaseBmp.instance;
+  final FirebaseBmp _bmpFirebase = FirebaseBmp.instance;
   final _idTextEditCtl = TextEditingController(); // Use _idTextEditCtl.text to get value
   final _pwTextEditCtl = TextEditingController(); // Use _pwTextEditCtl.text to get value
 
@@ -113,20 +114,7 @@ class _EntryPointState extends State<EntryPoint> with SingleTickerProviderStateM
                   _showDismissableAlert(context, 'Login Failed', 'Cannot login to Bitmap. It would be internal server error.');
                 }
               } on FirebaseAuthException catch (error) {
-                switch(error.code) {
-                  case 'invalid-email':
-                    _showDismissableAlert(context, 'Invalid Email', 'Email address that you typed is invalid. Please check your Email address.\nError Code: ' + error.code);
-                    break;
-                  case 'user-disabled':
-                    _showDismissableAlert(context, 'Your account is disabled', 'Your account is disabled. Please contact to service provider.\nError Code: ' + error.code);
-                    break;
-                  case "user-not-found":
-                    _showDismissableAlert(context, 'Incorrect Email', 'We can\'t find your account. Please sign up first.\nError Code: ' + error.code);
-                    break;
-                  case "wrong-password":
-                    _showDismissableAlert(context, 'Wrong password', 'You typed wrong password. Please check your password.\nError Code: ' + error.code);
-                    break;
-                }
+                authErrorDialog(error);
               }
             }
           ),
@@ -139,23 +127,10 @@ class _EntryPointState extends State<EntryPoint> with SingleTickerProviderStateM
                     // isLoggedIn = true;
                     Navigator.of(context).pop();
                   } else {
-                    _showDismissableAlert(context, 'Login Failed', 'Cannot login to Bitmap. It would be internal server error.');
+                    _showDismissableAlert(context, 'Register Failed', 'Cannot login to Bitmap. It would be internal server error.');
                   }
                 } on FirebaseAuthException catch (error) {
-                  switch(error.code) {
-                    case 'invalid-email':
-                      _showDismissableAlert(context, 'Invalid Email', 'Email address that you typed is invalid. Please check your Email address.\nError Code: ' + error.code);
-                      break;
-                    case 'user-disabled':
-                      _showDismissableAlert(context, 'Your account is disabled', 'Your account is disabled. Please contact to service provider.\nError Code: ' + error.code);
-                      break;
-                    case "user-not-found":
-                      _showDismissableAlert(context, 'Incorrect Email', 'We can\'t find your account. Please sign up first.\nError Code: ' + error.code);
-                      break;
-                    case "wrong-password":
-                      _showDismissableAlert(context, 'Wrong password', 'You typed wrong password. Please check your password.\nError Code: ' + error.code);
-                      break;
-                  }
+                  authErrorDialog(error);
                 }
               }
           ),
@@ -195,6 +170,23 @@ class _EntryPointState extends State<EntryPoint> with SingleTickerProviderStateM
     );
   }
 
+  authErrorDialog(FirebaseAuthException error) {
+    switch(error.code) {
+        case 'invalid-email':
+          _showDismissableAlert(context, 'Invalid Email', 'Email address that you typed is invalid. Please check your Email address.\nError Code: ${error.code}');
+          break;
+        case 'user-disabled':
+          _showDismissableAlert(context, 'Your account is disabled', 'Your account is disabled. Please contact to service provider.\nError Code: ${error.code}');
+          break;
+        case "user-not-found":
+          _showDismissableAlert(context, 'Incorrect Email', 'We can\'t find your account. Please sign up first.\nError Code: ${error.code}');
+          break;
+        case "wrong-password":
+          _showDismissableAlert(context, 'Wrong password', 'You typed wrong password. Please check your password.\nError Code: ${error.code}');
+          break;
+      }
+  }
+
   @override
   Widget build(BuildContext context) {
     return CupertinoApp(
@@ -214,8 +206,8 @@ class _EntryPointState extends State<EntryPoint> with SingleTickerProviderStateM
             child: isLoggedIn ? Icon(CupertinoIcons.arrow_right_square_fill): Icon(CupertinoIcons.arrow_right_square),
             onPressed: () {
               setState(() { });
-              if(isLoggedIn) _showLogoutDialog(context);
-              else _showLoginDialog(context);
+              isLoggedIn ? _showLogoutDialog(context) : _showLoginDialog(context);
+              // Auth(authMethods: isLoggedIn ? 'logout' : 'login');
             },
           ),
           leading: CupertinoButton(

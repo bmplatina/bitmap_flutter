@@ -44,13 +44,12 @@ class FirebaseBmp {
     return _auth.currentUser != null;
   }
 
-
   // User Info
   String? getDisplayName() {
     User? currentUser = FirebaseAuth.instance.currentUser;
 
     if (currentUser != null && currentUser.displayName != null) {
-      return currentUser.displayName;
+      return 'Welcome, ${currentUser.displayName}';
     } else {
       return 'Login First'; // 사용자가 로그인되어 있지 않거나 Display Name이 없는 경우 null 반환
     }
