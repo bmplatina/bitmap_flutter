@@ -28,3 +28,7 @@ doc/api/
 
 # Firebase, Platform
 lib/firebase_options.dart
+
+# IDE Preferences
+.idea/
+.vscode/
